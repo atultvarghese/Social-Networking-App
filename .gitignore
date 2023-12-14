@@ -1,2 +1,5 @@
 .idea
 sna_venv
+*.pyx
+*.pyc
+*__pycache__*
