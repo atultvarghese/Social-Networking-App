@@ -1,17 +1,25 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.contrib.auth.decorators import login_required
 
 
+@login_required()
 def home(request):
+    # if request.user.is_authenticated:
+    #     user_list = User.objects.all()
+    #     return render(request, 'registration/home.html', {'user_list': user_list})
+    #
+    # else:
+    #     # Do something for anonymous users.
+    #     print("Not Authenticated home")
+    #     return render(request, 'registration/register.html')
+
     user_list = User.objects.all()
-    # for user in user_list:
-    #     print(vars(user))
     return render(request, 'registration/home.html', {'user_list': user_list})
 
 
 def register(request):
-
     if request.method == "POST":
         # Create user and save to the database
         print(request.POST.get("email"))
@@ -25,12 +33,10 @@ def register(request):
         return HttpResponse("Hello register successfully completed!")
 
     if request.user.is_authenticated:
-        # Do something for authenticated users.
-        print("Authenticated")
-        return render(request, 'registration/home.html')
+        user_list = User.objects.all()
+        return render(request, 'registration/home.html', {'user_list': user_list})
 
     else:
         # Do something for anonymous users.
-        print("Not Authenticated")
+        print("Not Authenticated reg")
         return render(request, 'registration/register.html')
-
